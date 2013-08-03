@@ -53,7 +53,7 @@ This redirects, by default:
 Flinger lets you hook to reformat or log as you see fit, flinger really
 is:
 
-`flinger(onConsoleLog, onConsoleError, onError)`
+`flinger(onConsoleLog, onConsoleError, onException)`
 
 Each of the `onXXX` functions is:
 

@@ -13,14 +13,14 @@ content along to the server.
       done()
 
     it "grabs console log", (done) ->
-      console.log 'hi', 'log', 1, {}
+      console.log 'hi', 'log', 1, {}, true
       done()
 
     it "grabs console error", (done) ->
-      console.error 'hi', 'error'
+      console.error 'hi', 'error', 2, {}, false
       done()
 
     it "grabs window.Error construction", (done) ->
-      new Error('hi error')
+      new Error('hi exception')
       done()
 

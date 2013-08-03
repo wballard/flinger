@@ -23,10 +23,12 @@
   //hold all the log messages
   var sendBuffer = [];
   //enqueue up for transmission
-  var enqueue = function(logArguments, kind) {
+  var enqueue = function(logArguments, kind, extra) {
     sendBuffer.push({
       arguments: Array.prototype.slice.call(logArguments).map(function (x) {return x.toLocaleString()}),
-      kind: kind});
+      kind: kind,
+      extra: extra
+    });
       send();
   }
   //send along to the server
@@ -51,4 +53,11 @@
     originalConsoleError.apply(window, arguments);
     enqueue(arguments, 'error');
   };
+  //now, this is a different trick, monkey patch Error
+  var originalError = Error;
+  Error = function(message) {
+    var exception = new originalError(message);
+    enqueue(arguments, 'exception', exception.stack);
+    return exception;
+  }
 })();
