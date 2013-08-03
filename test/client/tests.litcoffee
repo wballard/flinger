@@ -17,7 +17,7 @@ content along to the server.
       done()
 
     it "grabs console error", (done) ->
-      console.log 'hi', 'error'
+      console.error 'hi', 'error'
       done()
 
     it "grabs window.Error construction", (done) ->

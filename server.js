@@ -9,17 +9,27 @@ var client = fs.readFileSync(path.join(__dirname, 'client.js'));
 
 module.exports = function(onConsoleLog, onConsoleError, onError) {
 
-  onConsoleLog = onConsoleLog || function(logEvent) {
-    if (logEvent.request.cookies && logEvent.request.cookies.flinger) {
-      logEvent.arguments.unshift('CLIENT ' + logEvent.request.cookies.flinger + ':');
+  var defaultHeaderString = function(request) {
+    if (request.cookies && request.cookies.flinger) {
+      return 'CLIENT ' + request.cookies.flinger + ':';
     } else {
-      logEvent.arguments.unshift('CLIENT:');
+      return 'CLIENT:';
     }
+  }
+
+  onConsoleLog = onConsoleLog || function(logEvent) {
+    logEvent.arguments.unshift(defaultHeaderString(logEvent.request));
     console.log.apply(null, logEvent.arguments);
   };
 
+  onConsoleError = onConsoleError || function(logEvent) {
+    logEvent.arguments.unshift(defaultHeaderString(logEvent.request));
+    console.error.apply(null, logEvent.arguments);
+  };
+
   var dispatch = {
-    'log': onConsoleLog
+    'log': onConsoleLog,
+    'error': onConsoleError
   };
 
   var process = function(request, flungLogs) {

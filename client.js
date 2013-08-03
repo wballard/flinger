@@ -42,8 +42,13 @@
   //patch console log, saving the original
   var originalConsoleLog = console.log || function(){};
   console.log = function() {
-    //log 'as normal'
     originalConsoleLog.apply(window, arguments);
     enqueue(arguments, 'log');
+  };
+  //patch console error, same trick
+  var originalConsoleError = console.error || function(){};
+  console.error = function() {
+    originalConsoleError.apply(window, arguments);
+    enqueue(arguments, 'error');
   };
 })();
