@@ -1,6 +1,6 @@
 {
   "name": "flinger",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Flinger flings logs from your browser clients back to your node servers so you can see what your users are up to.",
   "main": "server.js",
   "scripts": {
@@ -23,8 +23,7 @@
     "url": "https://github.com/wballard/flinger/issues"
   },
   "dependencies": {
-    "browserify": "~2.25.1",
-    "connect": "~2.8.4"
+    "connect": ">2.0.0"
   },
   "devDependencies": {
     "mocha": "~1.12.0",

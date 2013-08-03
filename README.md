@@ -26,6 +26,8 @@ your page.
 
 Here is the most basic installation possible:
 
+`npm install flinger`
+
 ```javascript
 var express = require('connect');
 var app = connect()
