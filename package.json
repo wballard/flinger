@@ -2,7 +2,7 @@
   "name": "flinger",
   "version": "0.0.0",
   "description": "Flinger flings logs from your browser clients back to your node servers so you can see what your users are up to.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "make test"
   },
@@ -23,12 +23,12 @@
     "url": "https://github.com/wballard/flinger/issues"
   },
   "dependencies": {
-    "browserify": "~2.25.1"
+    "browserify": "~2.25.1",
+    "connect": "~2.8.4"
   },
   "devDependencies": {
     "mocha": "~1.12.0",
     "coffee-script": "~1.6.3",
-    "express": "~3.3.4",
     "zombie": "~2.0.0-alpha19",
     "chai": "~1.7.2",
     "nodemon": "~0.7.8"

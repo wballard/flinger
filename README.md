@@ -21,15 +21,18 @@ Flinger is node _middleware_ for [express](https://github.com/visionmedia/expres
 
 # How To Use It
 
+**Flinger uses jQuery for HTTP back to the server**. Make sure it is in
+your page.
+
 Here is the most basic installation possible:
 
 ```javascript
-var express = require('express');
-var app = express()
-    .use(express.static(path.join(__dirname, 'client')))
-    .use(flinger());
-var server = require('http').createServer(app);
-server.listen(9999);
+var express = require('connect');
+var app = connect()
+    .use(connect.cookieParser())
+    .use(connect.static(path.join(__dirname, 'client')))
+    .use(flinger())
+    .listen(9999);
 ```
 
 Flinger serves its client library automatically as a convenience, so on

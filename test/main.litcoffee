@@ -3,14 +3,17 @@ Test connection and action over a streaming socket.
     path = require('path')
     should = require('chai').should()
     Browser = require('zombie')
-    express = require('express')
+    connect = require('connect')
+    flinger = require('../server')
 
     describe "Client library shim", ->
         before (done) ->
-            app = express()
-                .use(express.static(path.join(__dirname, 'client')))
-            server = require('http').createServer(app)
-            server.listen(9999, done)
+            app = connect()
+                .use(connect.cookieParser())
+                .use(connect.static(path.join(__dirname, 'client')))
+                .use(flinger())
+                .listen(9999)
+            done()
         after (done) ->
             done()
         it "serves a browser client self test page", (done) ->
