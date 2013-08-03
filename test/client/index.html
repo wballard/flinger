@@ -17,20 +17,13 @@
     }
     </script>
     <script src="chai.js"></script>
-    <script src="angular.min.js"></script>
     <script src="jquery.min.js"></script>
     <script src="coffee-script.js"></script>
     <script type="text/javascript" src="/flinger.js"></script>
     <script type="text/literate-coffeescript" src="tests.litcoffee"></script>
     <script type="text/coffeescript">
-        angular.bootstrap(document)
         $ ->
             mocha.run()
     </script>
-    <div id="testArea">
-      <input type="text" id="testSkyInput" ng-model="variableFromSky">
-      <input type="text" id="testSkyOutput" ng-model="variableToSky">
-      <p>{{variableToSky}}</p>
-    </div>
   </body>
 </html>

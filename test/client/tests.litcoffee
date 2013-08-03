@@ -16,6 +16,8 @@ content along to the server.
 
         it "grabs console error", (done) ->
 
+        it "grabs window.Error construction", (done) ->
+
         it "grabs window.onerror", (done) ->
 
 
