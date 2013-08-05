@@ -29,7 +29,7 @@
       kind: kind,
       extra: extra
     });
-      send();
+    send();
   }
   //send along to the server
   var send = debounce(function(){
@@ -40,7 +40,7 @@
       data: JSON.stringify(sendBuffer)
     });
     sendBuffer = [];
-  });
+  }, 1000);
   //patch console log, saving the original
   var originalConsoleLog = console.log || function(){};
   console.log = function() {
