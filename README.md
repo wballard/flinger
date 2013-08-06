@@ -68,3 +68,17 @@ Each `logEvent` is:
 * `arguments`, the javascript `arguments` captured on the client
   function
 
+## Fancy Client Use
+If you want to prefix the flinger log messages, say with your user
+session or user identifier -- we already thought of that:
+
+```javascript
+window.flingerAdditionalClientData = function () {
+  return "Your User ID Here!";
+}
+```
+
+You can do this anywhere you like client side. Yep, it's a global
+function, but did we mention that we're monkey patching console.log to
+make this work? Don't panic.
+

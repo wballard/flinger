@@ -9,26 +9,28 @@ var client = fs.readFileSync(path.join(__dirname, 'client.js'));
 
 module.exports = function(onConsoleLog, onConsoleError, onException) {
 
-  var defaultHeaderString = function(request) {
-    if (request.cookies && request.cookies.flinger) {
-      return 'CLIENT ' + request.cookies.flinger + ':';
+  var defaultHeaderString = function(logEvent) {
+    if (logEvent.user) {
+      return logEvent.user;
+    } else if (logEvent.request.cookies && logEvent.request.cookies.flinger) {
+      return 'CLIENT ' + logEvent.request.cookies.flinger + ':';
     } else {
       return 'CLIENT:';
     }
   }
 
   onConsoleLog = onConsoleLog || function(logEvent) {
-    logEvent.arguments.unshift(defaultHeaderString(logEvent.request));
+    logEvent.arguments.unshift(defaultHeaderString(logEvent));
     console.log.apply(null, logEvent.arguments);
   };
 
   onConsoleError = onConsoleError || function(logEvent) {
-    logEvent.arguments.unshift(defaultHeaderString(logEvent.request));
+    logEvent.arguments.unshift(defaultHeaderString(logEvent));
     console.error.apply(null, logEvent.arguments);
   };
 
   onException = onException || function(logEvent) {
-    logEvent.arguments.unshift(defaultHeaderString(logEvent.request));
+    logEvent.arguments.unshift(defaultHeaderString(logEvent));
     logEvent.arguments.push('\n');
     logEvent.arguments.push(logEvent.extra);
     console.error.apply(null, logEvent.arguments);
@@ -45,6 +47,7 @@ module.exports = function(onConsoleLog, onConsoleError, onException) {
       dispatch[log.kind]({
         arguments: log.arguments,
         extra: log.extra,
+        user: log.user,
         request: request
       });
     });

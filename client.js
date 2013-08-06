@@ -3,6 +3,9 @@
  */
 ;
 (function () {
+  window.flingerAdditionalClientData = function () {
+    return "";
+  }
   //debounce used to throttle sending to the server
   var debounce = function(func, wait, immediate) {
     var result;
@@ -27,7 +30,8 @@
     sendBuffer.push({
       arguments: Array.prototype.slice.call(logArguments).map(function (x) {return x.toLocaleString()}),
       kind: kind,
-      extra: extra
+      extra: extra,
+      user: flingerAdditionalClientData()
     });
     send();
   }
