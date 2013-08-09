@@ -76,11 +76,13 @@
   console.error.on = true;
   //now, this is a different trick, monkey patch Error
   var originalError = Error;
-  Error = function(message, file, line) {
-    originalError.apply(this, arguments);
-    enqueue(arguments, 'exception', new originalError(message, file, line).stack);
+  Error = function() {
+    try {
+      enbarf();
+    } catch(e) {
+      enqueue(arguments, 'exception', e.stack.split('\n').splice(1).join('\n'));
+    }
   };
-  Error.prototype = Object.create(originalError.prototype);
   console.exception = Error;
   console.exception.on = true;
 })();
