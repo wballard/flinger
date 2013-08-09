@@ -49,7 +49,7 @@
   var originalConsoleLog = console.log || function(){};
   console.log = function() {
     if (arguments.length) {
-      originalConsoleLog.apply(window, arguments);
+      originalConsoleLog.apply(console, arguments);
       enqueue(arguments, 'log');
     }
   };
@@ -57,7 +57,7 @@
   var originalConsoleWarn = console.warn || function(){};
   console.warn = function() {
     if (arguments.length) {
-      originalConsoleWarn.apply(window, arguments);
+      originalConsoleWarn.apply(console, arguments);
       enqueue(arguments, 'warn');
     }
   };
@@ -65,7 +65,7 @@
   var originalConsoleError = console.error || function(){};
   console.error = function() {
     if (arguments.length) {
-      originalConsoleError.apply(window, arguments);
+      originalConsoleError.apply(console, arguments);
       enqueue(arguments, 'error');
     }
   };
