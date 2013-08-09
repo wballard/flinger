@@ -80,10 +80,10 @@
     var exception = new originalError(message);
     //since we are throwing one stack deeper, touch up
     var stack = exception.stack.split('\n')
-    var first = stack.unshift();
-    stack.unshift();
-    stack.shift(first);
-    enqueue(arguments, 'exception', stack.join('\n'));
+    var first = stack.shift();
+    stack.shift();
+    stack.unshift(first);
+    enqueue(arguments, 'exception', stack);
     return exception;
   }
   console.exception = Error;
