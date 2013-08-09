@@ -27,13 +27,14 @@
   var sendBuffer = [];
   //enqueue up for transmission
   var enqueue = function(logArguments, kind, extra) {
-    if (console.off[kind]) return;
-    sendBuffer.push({
+    if (!console[kind].on) return;
+    message = {
       arguments: Array.prototype.slice.call(logArguments).map(function (x) {return x.toLocaleString()}),
       kind: kind,
       extra: extra,
-      user: flingerAdditionalClientData()
-    });
+    };
+    message.user = flingerAdditionalClientData(message);
+    sendBuffer.push(message);
     send();
   }
   //send along to the server
@@ -54,6 +55,7 @@
       enqueue(arguments, 'log');
     }
   };
+  console.log.on = true;
   //patch console warn, saving the original
   var originalConsoleWarn = console.warn || function(){};
   console.warn = function() {
@@ -62,6 +64,7 @@
       enqueue(arguments, 'warn');
     }
   };
+  console.warn.on = true;
   //patch console error, same trick
   var originalConsoleError = console.error || function(){};
   console.error = function() {
@@ -70,6 +73,7 @@
       enqueue(arguments, 'error');
     }
   };
+  console.error.on = true;
   //now, this is a different trick, monkey patch Error
   var originalError = Error;
   Error = function(message) {
@@ -77,7 +81,6 @@
     enqueue(arguments, 'exception', exception.stack);
     return exception;
   }
-  //control switches in case the logging is just too much
-  //just set console.off.log = true etc.
-  console.off = {};
+  console.exception = Error;
+  console.exception.on = true;
 })();

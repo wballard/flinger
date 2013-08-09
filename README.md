@@ -87,8 +87,8 @@ And you can switch things off, which will log locally but not
 got to the server:
 
 ```javascript
-console.off.log = true;
-console.off.warn = true;
-console.off.error = true;
-console.off.exception = true;
+console.log.on = false;
+console.warn.on = true;
+console.error.on = true;
+console.exception.on = true;
 ```

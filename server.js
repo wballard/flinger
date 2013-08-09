@@ -16,9 +16,9 @@ module.exports = function(onConsoleLog,
     if (logEvent.user) {
       return logEvent.user;
     } else if (logEvent.request.cookies && logEvent.request.cookies.flinger) {
-      return 'CLIENT ' + logEvent.request.cookies.flinger + ':';
+      return 'CLIENT ' + logEvent.kind + ' '  + logEvent.request.cookies.flinger + ':';
     } else {
-      return 'CLIENT:';
+      return 'CLIENT ' + logEvent.kind + ':';
     }
   }
 
@@ -53,12 +53,8 @@ module.exports = function(onConsoleLog,
 
   var process = function(request, flungLogs) {
     flungLogs.forEach(function(log) {
-      dispatch[log.kind]({
-        arguments: log.arguments,
-        extra: log.extra,
-        user: log.user,
-        request: request
-      });
+      log.request = request;
+      dispatch[log.kind](log);
     });
   }
   return function (request, response, next) {

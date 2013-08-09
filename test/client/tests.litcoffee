@@ -29,7 +29,7 @@ content along to the server.
       done()
 
     it "lets you switch off the log", (done) ->
-      console.off.log = true
+      console.log.on = true
       #indeed, this should not make it to the server
       console.log 'no, never, noooooo'
       done()
