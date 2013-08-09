@@ -78,7 +78,12 @@
   var originalError = Error;
   Error = function(message) {
     var exception = new originalError(message);
-    enqueue(arguments, 'exception', exception.stack);
+    //since we are throwing one stack deeper, touch up
+    var stack = exception.stack.split('\n')
+    var first = stack.unshift();
+    stack.unshift();
+    stack.shift(first);
+    enqueue(arguments, 'exception', stack.join('\n'));
     return exception;
   }
   console.exception = Error;
