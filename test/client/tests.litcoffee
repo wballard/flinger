@@ -16,8 +16,12 @@ content along to the server.
       console.log 'hi', 'log', 1, {}, true
       done()
 
+    it "grabs console warn", (done) ->
+      console.warn 'hi', 'warn', 2, {}, false
+      done()
+
     it "grabs console error", (done) ->
-      console.error 'hi', 'error', 2, {}, false
+      console.error 'hi', 'error', 3, {}, false
       done()
 
     it "grabs window.Error construction", (done) ->

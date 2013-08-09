@@ -48,14 +48,26 @@
   //patch console log, saving the original
   var originalConsoleLog = console.log || function(){};
   console.log = function() {
-    originalConsoleLog.apply(window, arguments);
-    enqueue(arguments, 'log');
+    if (arguments.length) {
+      originalConsoleLog.apply(window, arguments);
+      enqueue(arguments, 'log');
+    }
+  };
+  //patch console warn, saving the original
+  var originalConsoleWarn = console.warn || function(){};
+  console.warn = function() {
+    if (arguments.length) {
+      originalConsoleWarn.apply(window, arguments);
+      enqueue(arguments, 'warn');
+    }
   };
   //patch console error, same trick
   var originalConsoleError = console.error || function(){};
   console.error = function() {
-    originalConsoleError.apply(window, arguments);
-    enqueue(arguments, 'error');
+    if (arguments.length) {
+      originalConsoleError.apply(window, arguments);
+      enqueue(arguments, 'error');
+    }
   };
   //now, this is a different trick, monkey patch Error
   var originalError = Error;
