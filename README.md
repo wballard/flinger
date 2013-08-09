@@ -55,7 +55,7 @@ This redirects, by default:
 Flinger lets you hook to reformat or log as you see fit, flinger really
 is:
 
-`flinger(onConsoleLog, onConsoleError, onException)`
+`flinger(onConsoleLog, onConsoleWarn, onConsoleError, onException)`
 
 Each of the `onXXX` functions is:
 
@@ -82,3 +82,13 @@ You can do this anywhere you like client side. Yep, it's a global
 function, but did we mention that we're monkey patching console.log to
 make this work? Don't panic.
 
+
+And you can switch things off, which will log locally but not
+got to the server:
+
+```javascript
+console.off.log = true;
+console.off.warn = true;
+console.off.error = true;
+console.off.exception = true;
+```

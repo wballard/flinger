@@ -8,8 +8,8 @@ var fs = require('fs');
 var client = fs.readFileSync(path.join(__dirname, 'client.js'));
 
 module.exports = function(onConsoleLog,
-                          onConsoleError,
                           onConsoleWarn,
+                          onConsoleError,
                           onException) {
 
   var defaultHeaderString = function(logEvent) {
