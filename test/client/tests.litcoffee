@@ -28,3 +28,8 @@ content along to the server.
       new Error('hi exception')
       done()
 
+    it "lets you switch off the log", (done) ->
+      console.off.log = true
+      #indeed, this should not make it to the server
+      console.log 'no, never, noooooo'
+      done()

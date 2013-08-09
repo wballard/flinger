@@ -7,7 +7,10 @@ var fs = require('fs');
 
 var client = fs.readFileSync(path.join(__dirname, 'client.js'));
 
-module.exports = function(onConsoleLog, onConsoleError, onException) {
+module.exports = function(onConsoleLog,
+                          onConsoleError,
+                          onConsoleWarn,
+                          onException) {
 
   var defaultHeaderString = function(logEvent) {
     if (logEvent.user) {
@@ -24,6 +27,11 @@ module.exports = function(onConsoleLog, onConsoleError, onException) {
     console.log.apply(null, logEvent.arguments);
   };
 
+  onConsoleWarn = onConsoleWarn || function(logEvent) {
+    logEvent.arguments.unshift(defaultHeaderString(logEvent));
+    console.warn.apply(null, logEvent.arguments);
+  };
+
   onConsoleError = onConsoleError || function(logEvent) {
     logEvent.arguments.unshift(defaultHeaderString(logEvent));
     console.error.apply(null, logEvent.arguments);
@@ -38,6 +46,7 @@ module.exports = function(onConsoleLog, onConsoleError, onException) {
 
   var dispatch = {
     'log': onConsoleLog,
+    'warn': onConsoleWarn,
     'error': onConsoleError,
     'exception': onException
   };

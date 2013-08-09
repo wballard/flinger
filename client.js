@@ -27,6 +27,7 @@
   var sendBuffer = [];
   //enqueue up for transmission
   var enqueue = function(logArguments, kind, extra) {
+    if (console.off[kind]) return;
     sendBuffer.push({
       arguments: Array.prototype.slice.call(logArguments).map(function (x) {return x.toLocaleString()}),
       kind: kind,
@@ -76,4 +77,7 @@
     enqueue(arguments, 'exception', exception.stack);
     return exception;
   }
+  //control switches in case the logging is just too much
+  //just set console.off.log = true etc.
+  console.off = {};
 })();
