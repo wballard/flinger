@@ -26,12 +26,12 @@
   //hold all the log messages
   var sendBuffer = [];
   //enqueue up for transmission
-  var enqueue = function(logArguments, kind, extra) {
+  var enqueue = function(logArguments, kind, stack) {
     if (!console[kind].on) return;
     message = {
       arguments: Array.prototype.slice.call(logArguments).map(function (x) {return x.toLocaleString()}),
       kind: kind,
-      extra: extra,
+      stack: stack,
     };
     message.user = flingerAdditionalClientData(message);
     sendBuffer.push(message);

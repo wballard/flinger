@@ -42,7 +42,7 @@ module.exports = function(onConsoleLog,
   onException = onException || function(logEvent) {
     logEvent.arguments.unshift(defaultHeaderString(logEvent));
     logEvent.arguments.push('\n');
-    logEvent.arguments.push(logEvent.extra);
+    if (logEvent.stack) logEvent.arguments.push(logEvent.stack);
     console.error.apply(null, logEvent.arguments);
   };
 
