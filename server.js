@@ -13,13 +13,15 @@ module.exports = function(onConsoleLog,
                           onException) {
 
   var defaultHeaderString = function(logEvent) {
+    prexif = '';
     if (logEvent.user) {
-      return logEvent.user;
+      prefix = logEvent.user;
     } else if (logEvent.request.cookies && logEvent.request.cookies.flinger) {
-      return 'CLIENT ' + logEvent.kind + ' '  + logEvent.request.cookies.flinger + ':';
+      prefix = 'CLIENT ' + logEvent.request.cookies.flinger;
     } else {
-      return 'CLIENT ' + logEvent.kind + ':';
+      prefix = 'CLIENT';
     }
+    return prefix + ' ' + logEvent.kind + ':';
   }
 
   onConsoleLog = onConsoleLog || function(logEvent) {
