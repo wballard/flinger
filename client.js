@@ -77,15 +77,10 @@
   //now, this is a different trick, monkey patch Error
   var originalError = Error;
   Error = function(message) {
-    var exception = new originalError(message);
-    //since we are throwing one stack deeper, touch up
-    var stack = exception.stack.split('\n')
-    var first = stack.shift();
-    stack.shift();
-    stack.unshift(first);
-    enqueue(arguments, 'exception', stack);
-    return exception;
+    enqueue(arguments, 'exception', this.stack);
   }
+  Error.prototype = new originalError();
+  Error.prototype.constructor = Error;
   console.exception = Error;
   console.exception.on = true;
 })();

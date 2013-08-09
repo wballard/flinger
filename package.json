@@ -1,6 +1,6 @@
 {
   "name": "flinger",
-  "version": "0.2.3",
+  "version": "0.2.5",
   "description": "Flinger flings logs from your browser clients back to your node servers so you can see what your users are up to.",
   "main": "server.js",
   "scripts": {
