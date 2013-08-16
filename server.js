@@ -3,9 +3,9 @@
  */
 
 var path = require('path');
-var fs = require('fs');
+var uglify = require('uglify-js');
 
-var client = fs.readFileSync(path.join(__dirname, 'client.js'));
+var client = uglify.minify(path.join(__dirname, 'client.js')).code;
 
 module.exports = function(onConsoleLog,
                           onConsoleWarn,

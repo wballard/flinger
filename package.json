@@ -23,7 +23,8 @@
     "url": "https://github.com/wballard/flinger/issues"
   },
   "dependencies": {
-    "connect": ">2.0.0"
+    "connect": ">2.0.0",
+    "uglify-js": "~2.3.6"
   },
   "devDependencies": {
     "mocha": "~1.12.0",
