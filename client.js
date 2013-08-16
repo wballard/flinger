@@ -47,6 +47,8 @@
     });
     sendBuffer = [];
   }, 1000);
+  //ancient browsers may lack a console
+  window.console = window.console || {};
   //patch console log, saving the original
   var originalConsoleLog = console.log || function(){};
   console.log = function() {
