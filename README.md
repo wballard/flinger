@@ -1,4 +1,3 @@
-
 # Why Care?
 
 Web applications, and single page applications in particular, make it
@@ -29,10 +28,12 @@ Here is the most basic installation possible:
 `npm install flinger`
 
 ```javascript
-var express = require('connect');
-var app = connect()
-    .use(connect.cookieParser())
-    .use(connect.static(path.join(__dirname, 'client')))
+var path = require('path');
+var express = require('express');
+var flinger = require('flinger');
+var app = express()
+    .use(express.cookieParser())
+    .use(express.static(path.join(__dirname, 'client')))
     .use(flinger())
     .listen(9999);
 ```
