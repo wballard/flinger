@@ -7,41 +7,48 @@ var uglify = require('uglify-js');
 
 var client = uglify.minify(path.join(__dirname, 'client.js')).code;
 
-module.exports = function(onConsoleLog,
+module.exports = function(options, 
+                          onConsoleLog,
                           onConsoleWarn,
                           onConsoleError,
                           onException) {
+  //Default Options
+  if (!options) options = {format: 'string'};
 
   var defaultHeaderString = function(logEvent) {
-    prexif = '';
-    if (logEvent.user) {
-      prefix = logEvent.user;
-    } else if (logEvent.request.cookies && logEvent.request.cookies.flinger) {
-      prefix = 'CLIENT ' + logEvent.request.cookies.flinger;
-    } else {
-      prefix = 'CLIENT';
+    prefix = '';
+    if (logEvent.user)
+      prefix = 'User: ' + logEvent.user;
+    else if (logEvent.request.cookies && logEvent.request.cookies.flinger)
+      prefix = 'CLIENT: ' + logEvent.request.cookies.flinger;
+
+    logEvent.arguments.unshift(logEvent.kind + ':');
+    if (prefix.length) logEvent.arguments.unshift(prefix + ', ');
+
+    if (options.format === 'JSON')
+    {
+      logEvent.arguments.unshift('{')
+      logEvent.arguments.push('}')
     }
-    return prefix + ' ' + logEvent.kind + ':';
   }
 
   onConsoleLog = onConsoleLog || function(logEvent) {
-    logEvent.arguments.unshift(defaultHeaderString(logEvent));
+    defaultHeaderString(logEvent);
     console.log.apply(null, logEvent.arguments);
   };
 
   onConsoleWarn = onConsoleWarn || function(logEvent) {
-    logEvent.arguments.unshift(defaultHeaderString(logEvent));
+    defaultHeaderString(logEvent);
     console.warn.apply(null, logEvent.arguments);
   };
 
   onConsoleError = onConsoleError || function(logEvent) {
-    logEvent.arguments.unshift(defaultHeaderString(logEvent));
+    defaultHeaderString(logEvent);
     console.error.apply(null, logEvent.arguments);
   };
 
   onException = onException || function(logEvent) {
-    logEvent.arguments.unshift(defaultHeaderString(logEvent));
-    logEvent.arguments.push('\n');
+    defaultHeaderString(logEvent);
     if (logEvent.stack) logEvent.arguments.push(logEvent.stack);
     console.error.apply(null, logEvent.arguments);
   };

@@ -55,7 +55,10 @@ This redirects, by default:
 Flinger lets you hook to reformat or log as you see fit, flinger really
 is:
 
-`flinger(onConsoleLog, onConsoleWarn, onConsoleError, onException)`
+`flinger(options, onConsoleLog, onConsoleWarn, onConsoleError, onException)`
+
+flinger logs in string format by default.
+options.format can be set to JSON for JSON Formatted logs as well
 
 Each of the `onXXX` functions is:
 
@@ -75,6 +78,13 @@ session or user identifier -- we already thought of that:
 ```javascript
 window.flingerAdditionalClientData = function () {
   return "Your User ID Here!";
+}
+```
+
+Want to format your messages:
+```javascript
+window.flingerFormatter = function(x){
+	return "Your Format Here!";
 }
 ```
 
