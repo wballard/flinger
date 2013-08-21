@@ -4,6 +4,7 @@
 
 var path = require('path');
 var uglify = require('uglify-js');
+var _ = require('underscore');
 
 var client = uglify.minify(path.join(__dirname, 'client.js')).code;
 
@@ -13,7 +14,11 @@ module.exports = function(options,
                           onConsoleError,
                           onException) {
   //Default Options
-  if (!options) options = {format: 'string'};
+  var defaultOptions = {format: 'string'};
+  if (typeof options == 'object') 
+    options = _.extend(defaultOptions, options);
+  else 
+    options = defaultOptions;
 
   var defaultHeaderString = function(logEvent) {
     prefix = '';
