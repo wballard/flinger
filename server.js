@@ -13,35 +13,33 @@ module.exports = function(onConsoleLog,
                           onException) {
 
   var defaultHeaderString = function(logEvent) {
-    prexif = '';
-    if (logEvent.user) {
+    prefix = '';
+    if (logEvent.user)
       prefix = logEvent.user;
-    } else if (logEvent.request.cookies && logEvent.request.cookies.flinger) {
-      prefix = 'CLIENT ' + logEvent.request.cookies.flinger;
-    } else {
-      prefix = 'CLIENT';
-    }
-    return prefix + ' ' + logEvent.kind + ':';
+    else if (logEvent.request.cookies && logEvent.request.cookies.flinger)
+      prefix = 'CLIENT: ' + logEvent.request.cookies.flinger;
+
+    logEvent.arguments.unshift(logEvent.kind + ':');
+    if (prefix.length) logEvent.arguments.unshift(prefix + ', ');
   }
 
   onConsoleLog = onConsoleLog || function(logEvent) {
-    logEvent.arguments.unshift(defaultHeaderString(logEvent));
+    defaultHeaderString(logEvent);
     console.log.apply(null, logEvent.arguments);
   };
 
   onConsoleWarn = onConsoleWarn || function(logEvent) {
-    logEvent.arguments.unshift(defaultHeaderString(logEvent));
+    defaultHeaderString(logEvent);
     console.warn.apply(null, logEvent.arguments);
   };
 
   onConsoleError = onConsoleError || function(logEvent) {
-    logEvent.arguments.unshift(defaultHeaderString(logEvent));
+    defaultHeaderString(logEvent);
     console.error.apply(null, logEvent.arguments);
   };
 
   onException = onException || function(logEvent) {
-    logEvent.arguments.unshift(defaultHeaderString(logEvent));
-    logEvent.arguments.push('\n');
+    defaultHeaderString(logEvent);
     if (logEvent.stack) logEvent.arguments.push(logEvent.stack);
     console.error.apply(null, logEvent.arguments);
   };

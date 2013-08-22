@@ -6,6 +6,11 @@
   window.flingerAdditionalClientData = function () {
     return "";
   }
+
+  window.flingerFormatter = function (x) {
+    return x.toLocaleString();
+  }
+
   //debounce used to throttle sending to the server
   var debounce = function(func, wait, immediate) {
     var result;
@@ -29,7 +34,7 @@
   var enqueue = function(logArguments, kind, stack) {
     if (!console[kind].on) return;
     message = {
-      arguments: Array.prototype.slice.call(logArguments).map(function (x) {return x.toLocaleString()}),
+      arguments: Array.prototype.slice.call(logArguments).map(function (x) { return flingerFormatter(x); }),
       kind: kind,
       stack: stack,
     };
