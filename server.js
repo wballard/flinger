@@ -4,37 +4,23 @@
 
 var path = require('path');
 var uglify = require('uglify-js');
-var _ = require('underscore');
 
 var client = uglify.minify(path.join(__dirname, 'client.js')).code;
 
-module.exports = function(options, 
-                          onConsoleLog,
+module.exports = function(onConsoleLog,
                           onConsoleWarn,
                           onConsoleError,
                           onException) {
-  //Default Options
-  var defaultOptions = {format: 'string'};
-  if (typeof options == 'object') 
-    options = _.extend(defaultOptions, options);
-  else 
-    options = defaultOptions;
 
   var defaultHeaderString = function(logEvent) {
     prefix = '';
     if (logEvent.user)
-      prefix = 'User: ' + logEvent.user;
+      prefix = logEvent.user;
     else if (logEvent.request.cookies && logEvent.request.cookies.flinger)
       prefix = 'CLIENT: ' + logEvent.request.cookies.flinger;
 
     logEvent.arguments.unshift(logEvent.kind + ':');
     if (prefix.length) logEvent.arguments.unshift(prefix + ', ');
-
-    if (options.format === 'JSON')
-    {
-      logEvent.arguments.unshift('{')
-      logEvent.arguments.push('}')
-    }
   }
 
   onConsoleLog = onConsoleLog || function(logEvent) {

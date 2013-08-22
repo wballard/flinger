@@ -55,10 +55,7 @@ This redirects, by default:
 Flinger lets you hook to reformat or log as you see fit, flinger really
 is:
 
-`flinger(options, onConsoleLog, onConsoleWarn, onConsoleError, onException)`
-
-flinger logs in string format by default.
-options.format can be set to JSON for JSON Formatted logs as well
+`flinger(onConsoleLog, onConsoleWarn, onConsoleError, onException)`
 
 Each of the `onXXX` functions is:
 
