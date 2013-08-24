@@ -79,6 +79,13 @@ window.flingerAdditionalClientData = function () {
 }
 ```
 
+Want to format your messages:
+```javascript
+window.flingerFormatter = function(x){
+	return "Your Format Here!";
+}
+```
+
 You can do this anywhere you like client side. Yep, it's a global
 function, but did we mention that we're monkey patching console.log to
 make this work? Don't panic.
