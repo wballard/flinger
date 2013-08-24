@@ -20,7 +20,7 @@ module.exports = function(onConsoleLog,
       prefix = 'CLIENT: ' + logEvent.request.cookies.flinger;
 
     logEvent.arguments.unshift(logEvent.kind + ':');
-    if (prefix.length) logEvent.arguments.unshift(prefix + ', ');
+    if (prefix.length) logEvent.arguments.unshift(prefix);
   }
 
   onConsoleLog = onConsoleLog || function(logEvent) {
