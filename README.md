@@ -34,7 +34,7 @@ var flinger = require('flinger');
 var app = express()
     .use(express.cookieParser())
     .use(express.static(path.join(__dirname, 'client')))
-    .use(flinger())
+    .use(flinger.handler())
     .listen(9999);
 ```
 
@@ -100,3 +100,25 @@ console.warn.on = true;
 console.error.on = true;
 console.exception.on = true;
 ```
+
+## Server side log customizations
+
+
+By default flinger will log out the error from the client. But what if
+you want more information from the request, or prepend something to the
+log output?
+
+Flinger has that covered with addLogAppender.
+
+Usage to prepend a date for each log message, and append some request
+header fields:
+
+
+<pre><code>flinger.addLogAppender(function(logArguments,request) {
+ var stamp = new Date();
+ logArguments.unshift(stamp + " Client side error >> ");
+ logArguments.push("UserAgent : "+ request.headers['user-agent']);
+ logArguments.push("Referer : "+ request.headers['referer']);
+});
+</code></pre>
+
