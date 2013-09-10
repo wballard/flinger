@@ -7,11 +7,25 @@ var uglify = require('uglify-js');
 
 var client = uglify.minify(path.join(__dirname, 'client.js')).code;
 
-module.exports = function(onConsoleLog,
+
+var appenders = [];
+// Allow clients to augment the flinger log output with anything they want
+module.exports.addLogAppender = function(appendFunc) {
+  appenders.push(appendFunc);
+}
+
+module.exports.handler = function(onConsoleLog,
                           onConsoleWarn,
                           onConsoleError,
                           onException) {
 
+
+  clientLogAugmentations = function(logArguments,request) {
+    for (idx in appenders) {
+      logArguments.push(appenders[idx](request));
+    }
+
+  }
   var defaultHeaderString = function(logEvent) {
     prefix = '';
     if (logEvent.user)
@@ -21,7 +35,11 @@ module.exports = function(onConsoleLog,
 
     logEvent.arguments.unshift(logEvent.kind + ':');
     if (prefix.length) logEvent.arguments.unshift(prefix);
+
+    // cycle through any custom augmentations
+    clientLogAugmentations(logEvent.arguments,logEvent.request);
   }
+
 
   onConsoleLog = onConsoleLog || function(logEvent) {
     defaultHeaderString(logEvent);
