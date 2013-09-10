@@ -22,7 +22,7 @@ module.exports.handler = function(onConsoleLog,
 
   clientLogAugmentations = function(logArguments,request) {
     for (idx in appenders) {
-      logArguments.push(appenders[idx](request));
+      appenders[idx](logArguments,request);
     }
 
   }
