@@ -7,10 +7,13 @@ var uglify = require('uglify-js');
 
 var client = uglify.minify(path.join(__dirname, 'client.js')).code;
 
-module.exports = function(onConsoleLog,
+
+
+module.exports= function(onConsoleLog,
                           onConsoleWarn,
                           onConsoleError,
                           onException) {
+
 
   var defaultHeaderString = function(logEvent) {
     prefix = '';
@@ -21,7 +24,15 @@ module.exports = function(onConsoleLog,
 
     logEvent.arguments.unshift(logEvent.kind + ':');
     if (prefix.length) logEvent.arguments.unshift(prefix);
+
+    // cycle through any custom augmentations
+    // Allow clients to augment the flinger log output with anything they want
+    if(handler.augmentLog) {
+      handler.augmentLog(logEvent.arguments,logEvent.request);
+    }
+
   }
+
 
   onConsoleLog = onConsoleLog || function(logEvent) {
     defaultHeaderString(logEvent);
@@ -57,7 +68,7 @@ module.exports = function(onConsoleLog,
       dispatch[log.kind](log);
     });
   }
-  return function (request, response, next) {
+  handler = function (request, response, next) {
     //intercept requests for the client library
     if (request.url === '/flinger.js') {
       response.writeHead(200, {
@@ -89,4 +100,5 @@ module.exports = function(onConsoleLog,
       next();
     }
   }
+  return handler;
 }
