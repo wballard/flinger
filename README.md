@@ -100,3 +100,29 @@ console.warn.on = true;
 console.error.on = true;
 console.exception.on = true;
 ```
+
+## Server side log customizations
+
+
+By default flinger will log out the error from the client. But what if
+you want more information from the request, or prepend something to the
+log output?
+
+Flinger has that covered with augmentLog.
+
+Usage to prepend a date for each log message, and append some request
+header fields:
+
+
+<pre><code>
+var flinger_handler = flinger();
+flinger_handler.augmentLog = function (logArguments,request) {
+  var stamp = new Date();
+  logArguments.unshift(stamp + " Client side error >> ");
+  logArguments.push("UserAgent : "+ request.headers['user-agent']);
+  logArguments.push("Referer : "+ request.headers['referer']);
+};
+// now register this handler with the middleware stack
+app.use(flinger_handler);
+</code></pre>
+
