@@ -82,9 +82,18 @@ window.flingerAdditionalClientData = function () {
 Want to format your messages:
 ```javascript
 window.flingerFormatter = function(x){
-	return "Your Format Here!";
+  return "Your Format Here!";
 }
 ```
+
+Want to post to a different endpoint or have a server that doesn't live at '/'
+```html
+<script>
+  window.flingerURL("http://www.domain.com/endpoint");
+</script>
+```
+To disable posting to server, set `flingerURL` to an empty string.
+
 
 You can do this anywhere you like client side. Yep, it's a global
 function, but did we mention that we're monkey patching console.log to
@@ -125,4 +134,3 @@ flinger_handler.augmentLog = function (logArguments,request) {
 // now register this handler with the middleware stack
 app.use(flinger_handler);
 </code></pre>
-

@@ -3,11 +3,17 @@
  */
 ;
 (function () {
+  var flingerURL='/';
   window.flingerAdditionalClientData = function () {
     return "";
   }
 
   window.flingerFormatter = function (x) {
+    return x.toLocaleString();
+  }
+
+  window.flingerURL = function (x) {
+    flingerURL=x;
     return x.toLocaleString();
   }
 
@@ -44,12 +50,14 @@
   }
   //send along to the server
   var send = debounce(function(){
-    jQuery.ajax({
-      type: "POST",
-      url: "/",
-      contentType: 'application/flinger',
-      data: JSON.stringify(sendBuffer)
-    });
+    if (flingerURL && flingerURL.length) {
+        jQuery.ajax({
+        type: "POST",
+        url: flingerURL,
+        contentType: 'application/flinger',
+        data: JSON.stringify(sendBuffer)
+      });
+    }
     sendBuffer = [];
   }, 1000);
   //ancient browsers may lack a console
