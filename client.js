@@ -9,7 +9,12 @@
   }
 
   window.flingerFormatter = function (x) {
-    return x.toLocaleString();
+    if (typeof(x) === 'object'){
+      return JSON.stringify(x)
+    }
+    else {
+      return x.toLocaleString();
+    }
   }
 
   window.flingerURL = function (x) {
