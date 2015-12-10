@@ -9,8 +9,8 @@ Test connection and action over a streaming socket.
     describe "Client library shim", ->
         before (done) ->
             app = connect()
-                .use(connect.cookieParser())
-                .use(connect.static(path.join(__dirname, 'client')))
+                .use(require('cookie-parser')())
+                .use(require('serve-static')(path.join(__dirname, 'client')))
                 .use(flinger())
                 .listen(9999)
             done()
@@ -18,12 +18,10 @@ Test connection and action over a streaming socket.
             done()
         it "serves a browser client self test page", (done) ->
             this.timeout(5000)
-            browser = new Browser()
-            browser.debug = true
-            browser.runScripts = true
-            browser.visit 'http://localhost:9999/index.html', ->
-                browser.success.should.be.ok
-                done()
-            , (err) ->
+            Browser.visit 'http://localhost:9999/index.html',
+              {debug: true, runScripts: true}, (err, browser) ->
                 if err
                     console.log 'ERRRRR', err
+                    return done(err)
+                browser.success.should.be.ok
+                done()
