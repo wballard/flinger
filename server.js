@@ -35,10 +35,10 @@ module.exports= function(onConsoleLog,
   }
 
   notifyHC = function(message){
-    console.log(process.env);
+    console.log("ENV VARS******************* /n",  process.env);
     console.log(app);
-    oauthToken = process.env.HCToken
-    roomName = process.env.HCRoom
+    oauthToken = process.env.HCToken || null
+    roomName = process.env.HCRoom || null
     if (!oauthToken && !roomName) {
       return
     }
