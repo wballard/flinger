@@ -34,6 +34,22 @@ module.exports= function(onConsoleLog,
 
   }
 
+  notifyHC = function(message){
+    oauthToken = process.env.HCToken
+    roomName = process.env.HCRoom
+    if (!oauthToken && roomName) {
+      return
+    }
+
+    request({
+    url: "https://api.hipchat.com/v2/room/" + roomName + "/notification?notify=1&auth_token=" + oauthToken + "&message_format=text",
+    method: "POST",
+    body: message
+    }, function (error, response, body){
+      console.log(response);
+    });
+  }
+
 
   onConsoleLog = onConsoleLog || function(logEvent) {
     defaultHeaderString(logEvent);
@@ -68,23 +84,6 @@ module.exports= function(onConsoleLog,
     flungLogs.forEach(function(log) {
       log.request = request;
       dispatch[log.kind](log);
-    });
-  }
-
-
-  notifyHC = function(message){
-    oauthToken = process.env.HCToken
-    roomName = process.env.HCRoom
-    if (!oauthToken && roomName) {
-      return
-    }
-
-    request({
-    url: "https://api.hipchat.com/v2/room/" + roomName + "/notification?notify=1&auth_token=" + oauthToken + "&message_format=text",
-    method: "POST",
-    body: message
-    }, function (error, response, body){
-      console.log(response);
     });
   }
 
