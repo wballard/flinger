@@ -69,6 +69,24 @@ module.exports= function(onConsoleLog,
       dispatch[log.kind](log);
     });
   }
+
+
+  notifyHC = function(message){
+    oauthToken = process.env.HCToken
+    roomName = process.env.HCRoom
+    if (!oauthToken && roomName) {
+      return
+    }
+
+    request({
+    url: "https://api.hipchat.com/v2/room/" + roomName + "/notification?notify=1&auth_token=" + oauthToken + "&message_format=text",
+    method: "POST",
+    body: message
+    }, function (error, response, body){
+      console.log(response);
+    });
+  }
+
   handler = function (request, response, next) {
     //intercept requests for the client library
     if (request.url === '/flinger.js') {
