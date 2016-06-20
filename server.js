@@ -35,9 +35,10 @@ module.exports= function(onConsoleLog,
   }
 
   notifyHC = function(message){
+    console.log
     oauthToken = process.env.HCToken
     roomName = process.env.HCRoom
-    if (!oauthToken && roomName) {
+    if (!oauthToken && !roomName) {
       return
     }
 
