@@ -1,5 +1,6 @@
 /*
  * This is the flinger server middleware.
+ * Can send notifications to HC
  */
 
 var path = require('path');
