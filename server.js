@@ -46,7 +46,7 @@ module.exports= function(onConsoleLog,
     method: "POST",
     body: message
     }, function (error, response, body){
-      console.log(response);
+      console.log("Posted to HC", roomName, response);
     });
   }
 
