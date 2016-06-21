@@ -5,7 +5,7 @@
 
 var path = require('path');
 var uglify = require('uglify-js');
-
+var request = require('request');
 var client = uglify.minify(path.join(__dirname, 'client.js')).code;
 
 
@@ -35,7 +35,6 @@ module.exports= function(onConsoleLog,
   }
 
   notifyHC = function(message){
-    console.log("ENV VARS******************* /n",  process.env);
     oauthToken = process.env.HCToken || null
     roomName = process.env.HCRoom || null
     if (!oauthToken && !roomName) {

@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "connect": ">2.0.0",
+    "request": "2.72.0",
     "uglify-js": "~2.3.6"
   },
   "devDependencies": {
