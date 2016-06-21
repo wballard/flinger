@@ -81,7 +81,7 @@ module.exports= function(onConsoleLog,
     'exception': onException
   };
 
-  var process = function(request, flungLogs) {
+  var processLog = function(request, flungLogs) {
     flungLogs.forEach(function(log) {
       log.request = request;
       dispatch[log.kind](log);
@@ -108,7 +108,7 @@ module.exports= function(onConsoleLog,
         }
         try {
           var flungLogs = JSON.parse(buf);
-          process(request, flungLogs);
+          processLog(request, flungLogs);
         } catch (err){
           err.body = buf;
           err.status = 400;
