@@ -18,7 +18,7 @@ Flinger is node _middleware_ for [express](https://github.com/visionmedia/expres
     * `Error`
 * For the server, provides a receiver that catches and logs client logs
   * Can optionally send those logs to a HipChat room.
-    * Need to Specify 2 env vars HCToken (Hipchat oauthToken) and HCRoom(name of hipchat    room to send messages to)
+    * Need to Specify 2 env vars HCToken (Hipchat oauthToken) and HCRoom(name of hipchat room to send messages to)
 
 
 # How To Use It
