@@ -45,6 +45,7 @@ module.exports= function(onConsoleLog,
     request({
     url: "https://api.hipchat.com/v2/room/" + roomName + "/notification?notify=1&auth_token=" + oauthToken + "&message_format=text",
     method: "POST",
+    content-type: 'application/json',
     body: JSON.stringify(message)
     }, function (error, response, body){
       console.log("Posted to HC", roomName, response);
