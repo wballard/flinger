@@ -35,7 +35,6 @@ module.exports= function(onConsoleLog,
   }
 
   notifyHC = function(message){
-    console.log(message);
     oauthToken = process.env.HCToken || null
     roomName = process.env.HCRoom || null
     if (!oauthToken && !roomName) {
@@ -43,11 +42,13 @@ module.exports= function(onConsoleLog,
     }
 
     request({
-    url: "https://api.hipchat.com/v2/room/" + roomName + "/notification?notify=1&auth_token=" + oauthToken + "&message_format=text",
+    url: "https://api.hipchat.com/v2/room/" + roomName + "/notification?notify=true&auth_token=" + oauthToken + "&message_format=text",
     method: "POST",
     json:{'message': JSON.stringify(message)}
     }, function (error, response, body){
-      console.log(error);
+      if (error){
+        console.log(error);
+      }
     });
   }
 
