@@ -66,13 +66,14 @@ module.exports= function(onConsoleLog,
   onConsoleError = onConsoleError || function(logEvent) {
     defaultHeaderString(logEvent);
     console.error.apply(null, logEvent.arguments);
-    notifyHC(logEvent.arguments)
+    notifyHC(logEvent.arguments);
   };
 
   onException = onException || function(logEvent) {
     defaultHeaderString(logEvent);
     if (logEvent.stack) logEvent.arguments.push(logEvent.stack);
     console.error.apply(null, logEvent.arguments);
+    notifyHC(logEvent.arguments);
   };
 
   var dispatch = {
