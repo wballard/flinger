@@ -17,6 +17,9 @@ Flinger is node _middleware_ for [express](https://github.com/visionmedia/expres
     * `console.error`
     * `Error`
 * For the server, provides a receiver that catches and logs client logs
+  * Can optionally send those logs to a HipChat room.
+    * Need to Specify 2 env vars HCToken (Hipchat oauthToken) and HCRoom(name of hipchat    room to send messages to)
+
 
 # How To Use It
 
@@ -75,6 +78,8 @@ session or user identifier -- we already thought of that:
 
 ```javascript
 window.flingerAdditionalClientData = function () {
+  # you can also use something like window.location.href to help
+  # identify the app sending the error.
   return "Your User ID Here!";
 }
 ```
