@@ -42,9 +42,14 @@ module.exports= function(onConsoleLog,
     }
 
     request({
-    url: "https://api.hipchat.com/v2/room/" + roomName + "/notification?notify=true&auth_token=" + oauthToken + "&message_format=text",
+    url: "https://api.hipchat.com/v2/room/" + roomName + "/notification?auth_token=" + oauthToken,
     method: "POST",
-    json:{'message': JSON.stringify(message)}
+    json:{
+      'message': JSON.stringify(message),
+      'notify': true,
+      'message_format': 'text',
+      'color': 'red'
+    }
     }, function (error, response, body){
       if (error){
         console.log(error);
