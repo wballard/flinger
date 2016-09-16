@@ -1,10 +1,11 @@
 /*
  * This is the flinger server middleware.
+ * Can send notifications to HC
  */
 
 var path = require('path');
 var uglify = require('uglify-js');
-
+var request = require('request');
 var client = uglify.minify(path.join(__dirname, 'client.js')).code;
 
 
@@ -33,6 +34,29 @@ module.exports= function(onConsoleLog,
 
   }
 
+  notifyHC = function(message){
+    oauthToken = process.env.HCToken || null
+    roomName = process.env.HCRoom || null
+    if (!oauthToken && !roomName) {
+      return
+    }
+
+    request({
+    url: "https://api.hipchat.com/v2/room/" + roomName + "/notification?auth_token=" + oauthToken,
+    method: "POST",
+    json:{
+      'message': JSON.stringify(message),
+      'notify': true,
+      'message_format': 'text',
+      'color': 'red'
+    }
+    }, function (error, response, body){
+      if (error){
+        console.log(error);
+      }
+    });
+  }
+
 
   onConsoleLog = onConsoleLog || function(logEvent) {
     defaultHeaderString(logEvent);
@@ -47,12 +71,14 @@ module.exports= function(onConsoleLog,
   onConsoleError = onConsoleError || function(logEvent) {
     defaultHeaderString(logEvent);
     console.error.apply(null, logEvent.arguments);
+    notifyHC(logEvent.arguments);
   };
 
   onException = onException || function(logEvent) {
     defaultHeaderString(logEvent);
     if (logEvent.stack) logEvent.arguments.push(logEvent.stack);
     console.error.apply(null, logEvent.arguments);
+    notifyHC(logEvent.arguments);
   };
 
   var dispatch = {
@@ -62,12 +88,13 @@ module.exports= function(onConsoleLog,
     'exception': onException
   };
 
-  var process = function(request, flungLogs) {
+  var processLog = function(request, flungLogs) {
     flungLogs.forEach(function(log) {
       log.request = request;
       dispatch[log.kind](log);
     });
   }
+
   handler = function (request, response, next) {
     //intercept requests for the client library
     if (request.url === '/flinger.js') {
@@ -88,7 +115,7 @@ module.exports= function(onConsoleLog,
         }
         try {
           var flungLogs = JSON.parse(buf);
-          process(request, flungLogs);
+          processLog(request, flungLogs);
         } catch (err){
           err.body = buf;
           err.status = 400;
