@@ -22,6 +22,7 @@
     return x.toLocaleString();
   }
 
+  var functionApply = Function.prototype.apply;
   //debounce used to throttle sending to the server
   var debounce = function(func, wait, immediate) {
     var result;
@@ -66,37 +67,20 @@
     sendBuffer = [];
   }, 1000);
   //ancient browsers may lack a console
-  window.console = window.console || {};
-  //patch console log, saving the original
-  var originalConsoleLog = console.log || function(){};
-  console.log = function() {
-    if (arguments.length) {
-      originalConsoleLog.apply(console, arguments);
-      enqueue(arguments, 'log');
-    }
-  };
-  console.log.on = true;
-  //patch console warn, saving the original
-  var originalConsoleWarn = console.warn || function(){};
-  console.warn = function() {
-    if (arguments.length) {
-      originalConsoleWarn.apply(console, arguments);
-      enqueue(arguments, 'warn');
-    }
-  };
-  console.warn.on = true;
-  //patch console error, same trick
-  var originalConsoleError = console.error || function(){};
-  console.error = function() {
-    if (arguments.length) {
-      originalConsoleError.apply(console, arguments);
-      enqueue(arguments, 'error');
-    }
-  };
-  console.error.on = true;
-  //now, this is a different trick, monkey patch Error
-  var originalError = Error;
-  Error = function() {
+  var console = window.console || (window.console = {});
+  var noop = function() {};
+  ['error', 'log', 'warn'].forEach(function(name) {
+    var method = name in console && functionApply.bind(console[name], console) || noop;
+
+    (console[name] = function() {
+      if (arguments.length) {
+        method(arguments);
+        enqueue(arguments, name);
+      }
+    }).on = true;
+  });
+
+  window.Error = function() {
     try {
       enbarf();
     } catch(e) {
